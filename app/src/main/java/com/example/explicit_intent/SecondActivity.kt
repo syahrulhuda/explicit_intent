@@ -25,7 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.explicit_intent.ui.theme.ExplicitintentTheme
+import com.example.explicit_intent.ui.theme.Explicit_intentTheme
 
 class SecondActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -34,7 +34,7 @@ class SecondActivity : ComponentActivity() {
         val message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE) ?: "No message found"
 
         setContent {
-            ExplicitintentTheme {
+            Explicit_intentTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
