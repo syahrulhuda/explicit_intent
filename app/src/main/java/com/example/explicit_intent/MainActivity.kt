@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.example.explicit_intent.ui.theme.Explicit_intentTheme
 
 // Data class to represent a single chat message
-data class Message(val text: String, val sender: Sender)
+data class Message(val text: String, val sender: Sender, val senderName: String)
 
 // Enum to identify the sender
 enum class Sender {
@@ -63,7 +63,7 @@ fun MainScreen() {
         if (result.resultCode == Activity.RESULT_OK) {
             val reply = result.data?.getStringExtra(SecondActivity.EXTRA_REPLY)
             if (!reply.isNullOrEmpty()) {
-                messages.add(Message(reply, Sender.OTHER))
+                messages.add(Message(reply, Sender.OTHER, "second"))
             }
         }
     }
@@ -97,7 +97,7 @@ fun MainScreen() {
             Spacer(modifier = Modifier.width(8.dp))
             Button(onClick = {
                 if (messageText.isNotBlank()) {
-                    messages.add(Message(messageText, Sender.ME))
+                    messages.add(Message(messageText, Sender.ME, "main"))
                     val intent = Intent(context, SecondActivity::class.java).apply {
                         putExtra(MainActivity.EXTRA_MESSAGE, messageText)
                     }
@@ -128,13 +128,22 @@ fun MessageBubble(message: Message) {
             .padding(vertical = 4.dp),
         contentAlignment = alignment
     ) {
-        Box(
-            modifier = Modifier
-                .clip(shape)
-                .background(bubbleColor)
-                .padding(horizontal = 16.dp, vertical = 10.dp)
+        Column(
+            horizontalAlignment = if (isMe) Alignment.End else Alignment.Start
         ) {
-            Text(text = message.text, color = MaterialTheme.colorScheme.onSurface)
+            Text(
+                text = message.senderName,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 4.dp)
+            )
+            Box(
+                modifier = Modifier
+                    .clip(shape)
+                    .background(bubbleColor)
+                    .padding(horizontal = 16.dp, vertical = 10.dp)
+            ) {
+                Text(text = message.text, color = MaterialTheme.colorScheme.onSurface)
+            }
         }
     }
 }
